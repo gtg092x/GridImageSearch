@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+    Size (small, medium, large, extra-large)
+    Color filter (black, blue, brown, gray, green, etc...)
+    Type (faces, photo, clip art, line art)
+    Site (espn.com)
+    -->
+    <string-array name="pref_sizes">
+        <item>small</item>
+        <item>medium</item>
+        <item>large</item>
+        <item>extra-large</item>
+        <item>any</item>
+    </string-array>
+    <string-array name="pref_sizes_values">
+        <item>icon</item>
+        <item>large</item>
+        <item>xxlarge</item>
+        <item>huge</item>
+        <item>-1</item>
+    </string-array>
+    <string-array name="pref_type">
+        <item>faces</item>
+        <item>photo</item>
+        <item>clip art</item>
+        <item>line art</item>
+        <item>any</item>
+    </string-array>
+    <string-array name="pref_type_values">
+        <item>faces</item>
+        <item>photo</item>
+        <item>clip art</item>
+        <item>line art</item>
+        <item>-1</item>
+    </string-array>
+    <string-array name="pref_color">
+        <item>Black</item>
+        <item>Blue</item>
+        <item>Brown</item>
+        <item>Gray</item>
+        <item>Green</item>
+        <item>Orange</item>
+        <item>Pink</item>
+        <item>Purple</item>
+        <item>Red</item>
+        <item>Teal</item>
+        <item>White</item>
+        <item>Yellow</item>
+        <item>any</item>
+    </string-array>
+    <string-array name="pref_color_values">
+        <item>black</item>
+        <item>blue</item>
+        <item>brown</item>
+        <item>gray</item>
+        <item>green</item>
+        <item>orange</item>
+        <item>pink</item>
+        <item>purple</item>
+        <item>red</item>
+        <item>teal</item>
+        <item>white</item>
+        <item>yellow</item>
+        <item>-1</item>
+    </string-array>
+</resources>

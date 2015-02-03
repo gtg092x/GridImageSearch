@@ -27,6 +27,19 @@ public class GoogleImageClient {
         params.add("start",Integer.toString(query.getStart()));
         params.add("rsz",Integer.toString(query.pageSize));
 
+        if(query.imageType != null && !query.imageType.equals("-1")){
+            params.add("imgtype",query.imageType);
+        }
+        if(query.imageSize != null && !query.imageSize.equals("-1")){
+            params.add("imgsz",query.imageSize);
+        }
+        if(query.imgSite != null && query.imgSite.length() > 0){
+            params.add("as_sitesearch",query.imgSite);
+        }
+        if(query.imageColor != null && !query.imageColor.equals("-1")){
+            params.add("imgcolor",query.imageColor);
+        }
+
         return params;
     }
 

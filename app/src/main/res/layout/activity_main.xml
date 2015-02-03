@@ -31,10 +31,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/gv_results"
-        android:layout_below="@+id/et_search"
+        android:layout_below="@+id/btn_search"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
         android:numColumns="3"
         android:paddingTop="10dp" />
+
+    <ProgressBar
+        style="?android:attr/progressBarStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBar"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/btn_search"
+        android:layout_alignRight="@+id/gv_results"
+        android:layout_alignEnd="@+id/gv_results"
+        android:keepScreenOn="true"
+        android:visibility="invisible"
+        android:indeterminate="true" />
 </RelativeLayout>

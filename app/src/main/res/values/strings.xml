@@ -5,5 +5,12 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_image_display_large">ImageDisplayLarge</string>
+    <string name="title_activity_search_settings">SearchSettings</string>
+    <string name="pref_title_search_size">Image Size</string>
+    <string name="pref_title_search_type">Image Type</string>
+    <string name="pref_color_title">Color Filter</string>
+    <string name="pref_color_summary">Restrict search results to match certain color profile</string>
+    <string name="pref_title_site_name">Domain</string>
+    <string name="pref_header_search">Search Extras</string>
 
 </resources>

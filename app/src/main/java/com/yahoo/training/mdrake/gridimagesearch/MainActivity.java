@@ -2,6 +2,9 @@ package com.yahoo.training.mdrake.gridimagesearch;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.media.audiofx.BassBoost;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ProgressBar;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -28,10 +32,11 @@ public class MainActivity extends ActionBarActivity {
     private EditText etQuery;
     private GridView gvResults;
     ImageClientQuery query;
-    ImageClientQuery lastQuery;
+
     GoogleImageClient client;
     private ArrayList<ImageResult> imageResults;
     ImageResultsAdapter adapter;
+    ProgressBar idBar = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,13 +44,23 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
         imageResults = new ArrayList<ImageResult>();
         query = new ImageClientQuery();
-        lastQuery = null;
+        readAndApplyPreferences();
+
         client = new GoogleImageClient(this);
         setupViews();
         adapter  = new ImageResultsAdapter(MainActivity.this,imageResults);
 
         gvResults.setAdapter(adapter);
 
+    }
+
+    void readAndApplyPreferences(){
+        SharedPreferences preferences = PreferenceManager
+                .getDefaultSharedPreferences(MainActivity.this);
+        query.imageType = preferences.getString("search_type",null);
+        query.imageSize = preferences.getString("search_size",null);
+        query.imgSite = preferences.getString("search_domain",null);
+        query.imageColor = preferences.getString("search_color",null);
     }
 
     void parseResults(JSONArray json, int currentPageIndex, int totals) throws JSONException {
@@ -61,22 +76,14 @@ public class MainActivity extends ActionBarActivity {
         Log.v("JSON","ADDED ALL");
     }
 
-    ProgressDialog barProgressDialog = null;
+
 
     void showLoading(){
-        barProgressDialog = new ProgressDialog(MainActivity.this);
-        barProgressDialog.setTitle("Searching ...");
-
-        barProgressDialog.setProgressStyle(barProgressDialog.STYLE_SPINNER);
-        barProgressDialog.setProgress(0);
-        barProgressDialog.setMax(20);
-        barProgressDialog.show();
+        idBar.setVisibility(View.VISIBLE);
     }
 
     void hideLoading(){
-        if(barProgressDialog != null){
-            barProgressDialog.hide();
-        }
+        idBar.setVisibility(View.INVISIBLE);
     }
 
     void fetchAndDisplayImages(){
@@ -103,13 +110,23 @@ public class MainActivity extends ActionBarActivity {
                 Log.v("JSON","FAIL");
                 hideLoading();
                 try {
-                    Log.v("JSON",errorResponse.toString(4));
+                    if(errorResponse!=null)
+                        Log.v("JSON",errorResponse.toString(4));
+                    else
+                        Log.v("JSON",Integer.toString(statusCode));
                 } catch (JSONException e1) {
                     e1.printStackTrace();
                 }
             }
 
         });
+    }
+
+    void updateAndLoadQuery(){
+        updateQuery();
+        if(query.isValid()){
+            fetchAndDisplayImages();
+        }
     }
 
     void setupViews(){
@@ -121,10 +138,8 @@ public class MainActivity extends ActionBarActivity {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateQuery();
-                if(query.isValid()){
-                    fetchAndDisplayImages();
-                }
+                query.search = etQuery.getText().toString();
+                updateAndLoadQuery();
             }
         });
 
@@ -150,10 +165,12 @@ public class MainActivity extends ActionBarActivity {
 
             }
         });
+
+        idBar = (ProgressBar)findViewById(R.id.progressBar);
     }
 
     void updateQuery(){
-        query.search = etQuery.getText().toString();
+
         query.clearCursor();
 
     }
@@ -166,6 +183,9 @@ public class MainActivity extends ActionBarActivity {
         return true;
     }
 
+    public static final int CONFIG_CODE = 201;
+    public static final String CONFIG_EXTRA = "config";
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -175,9 +195,24 @@ public class MainActivity extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+
+            Intent settingsIntent = new Intent(MainActivity.this, SettingsActivity.class);
+            startActivityForResult(settingsIntent, CONFIG_CODE);
+
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == CONFIG_CODE) {
+
+            readAndApplyPreferences();
+            updateAndLoadQuery();
+
+        }
     }
 }
